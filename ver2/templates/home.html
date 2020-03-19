@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+
+{% if success %}
+    <script>alert("File {{success}}");</script>
+{% endif %}
+
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">Wellcome User!{{current_user.email}}</h1>
+        <hr class="my-4">
+        <p class="lead">
+          <a class="btn btn-primary btn-lg" href="/logout" role="button">Logout</a>
+        </p>
+      </div>
+</div>
+
+<form action="/uploader" method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+</form>
+
+{% endblock %}
