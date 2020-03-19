@@ -5,6 +5,8 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="ver2.seg.jalgaoncenter" />
+        </list>
       </option>
     </inspection_tool>
+  </profile>
 </component>
