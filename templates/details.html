@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Details - Go Green</title>
+<link rel="icon" href="http://127.0.0.1:5000/static/treeicon.png" type="image/icon type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css'>
+<link rel='stylesheet' href='https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css'>
+<link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.5.2/css/buttons.bootstrap4.min.css'>
+<link href="http://127.0.0.1:5000/static/css/styles.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+<style>
+:after, :before {
+    box-sizing: border-box;
+}
+
+a {
+    color: #337ab7;
+    text-decoration: none;
+}
+i{
+  margin-bottom:4px;
+}
+
+.btn {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+
+.btn-app {
+    color: white;
+    box-shadow: none;
+    border-radius: 3px;
+    position: relative;
+    padding: 10px 15px;
+    margin: 0;
+    min-width: 60px;
+    max-width: 80px;
+    text-align: center;
+    border: 1px solid #ddd;
+    background-color: #f4f4f4;
+    font-size: 12px;
+    transition: all .2s;
+    background-color: steelblue !important;
+}
+
+.btn-app > .fa, .btn-app > .glyphicon, .btn-app > .ion {
+    font-size: 30px;
+    display: block;
+}
+
+.btn-app:hover {
+    border-color: #aaa;
+    transform: scale(1.1);
+}
+
+.pdf {
+  background-color: #dc2f2f !important;
+}
+
+.excel {
+    background-color: #3ca23c !important;
+}
+
+.csv {
+    background-color: #e86c3a !important;
+}
+
+.imprimir {
+    background-color: #8766b1 !important;
+}
+
+/*
+Esto es opcional pero sirve para que todos los botones de exportacion se distribuyan de manera equitativa usando flexbox
+
+.flexcontent {
+    display: flex;
+    justify-content: space-around;
+}
+*/
+
+.selectTable{
+  height:40px;
+  float:right;
+}
+
+div.dataTables_wrapper div.dataTables_filter {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #4682b4;
+    border-color: #4682b4;
+}
+.btn-secondary:hover {
+    color: #fff;
+    background-color: #315f86;
+    border-color: #545b62;
+}
+
+
+
+.titulo-tabla{
+  color:#606263;
+  text-align:center;
+  margin-top:15px;
+  margin-bottom:15px;
+  font-weight:bold;
+}
+
+
+.inline{
+  display:inline-block;
+  padding:0;
+}
+</style>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+<script>
+        function printDiv() {
+            var divContents = document.getElementById("example");
+            var a = window.open();
+            a.document.write(divContents.innerHTML)
+            a.document.close();
+            a.print();
+        }
+</script>
+
+</head>
+<body class="sb-nav-fixed">
+{% with messages = get_flashed_messages() %}
+         {% if messages %}
+               {% for message in messages %}
+                    <script>alert("{{ message }}")</script>
+               {% endfor %}
+         {% endif %}
+    {% endwith %}
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="/home">Go Green</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fa fa-bars" aria-hidden="true"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+<!--                        <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>-->
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Login as:</div>
+                            <a class="nav-link"><div class="sb-nav-link-icon"></div>{{current_user.email}}</a>
+
+                            <div class="sb-sidenav-menu-heading">Dashboard</div>
+                            <a class="nav-link" href="/home"><div class="sb-nav-link-icon"><i class="fa fa-tachometer"></i></div>Dashboard</a>
+
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                                <a class="nav-link" href="/upload"><div class="sb-nav-link-icon"><i class="fa fa-upload" aria-hidden="true"></i></div>Upload</a>
+                                <a class="nav-link" href="/myuploads"><div class="sb-nav-link-icon"><i class="fa fa-tachometer"></i></div>My Uploads</a>
+
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <div id="example">
+                        <!-- <h1 class="mt-4">Dashboard</h1> -->
+                        <ol class="breadcrumb mb-4" style="margin-top: 15px;">
+                            <li class="breadcrumb-item active">Details of Region</li>
+                        </ol>
+<!-- <h3 class="titulo-tabla">Details of Region </h3> -->
+<div class="card mb-4">
+    <div class="card-body"><h4>Image of Region</h4><hr style="background-color: black;margin-bottom: 5px;"></div>
+    <div class="card-body">
+        <div class="row">
+            <!-- <div class="col-sm-4 text-center"><h4>Image of Region</h4></div> -->
+            <div class="col-sm-12"><img src="http://127.0.0.1:5000/{{information.path}}" class="img-fluid" style="height: 500px;width: 1200px;"></div>
+        </div>
+    </div>
+</div>   
+<table class="table table-bordered" style="width:100%">
+<thead>
+<tr>
+<th>Entity</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name of Region</td>
+<td>{{information.place}}</td>
+</tr>
+<tr>
+<td>Latitude</td>
+<td>{{information.latitude}}</td>
+</tr>
+<tr>
+<td>Longitude</td>
+<td>{{information.longitude}}</td>
+</tr>
+<tr>
+<td>Area covered</td>
+<td>0.66 sq. km</td>
+</tr>
+<tr>
+<td>Approx. Population</td>
+<td>{{information.population}}</td>
+</tr>
+<tr>
+<td>Approx. Bikes count</td>
+<td>{{information.bikes}}</td>
+</tr>
+
+<tr>
+<td>Approx. Cars count</td>
+<td>{{information.car}}</td>
+</tr>
+
+
+<tr>
+<td>Approx. Buses count</td>
+<td>{{information.bus}}</td>
+</tr>
+
+<tr>
+<td>Total Carbon Dioxide estimated in region</td>
+<td>{{information.carbon}} litres</td>
+</tr>
+<td>Total Oxygen generated in region</td>
+<td>{{information.oxygen}} litres</td>
+</tr>
+<td>Total number Trees count in region</td>
+<td>{{information.trees}}</td>
+<tr>
+<td>Air Quality Index</td>
+<td>{{information.aqi}}</td>
+</tr>
+<tr>
+<td>Trees/Greenery availability</td>
+<td>{{information.greenery}}</td>
+</tr>
+<tr>
+<td>Need of plantation in emergency</td>
+<td>{{information.plantation}}</td>
+</tr>
+<tr>
+<td>Approx. number of trees to be planted</td>
+<td>{{information.planted}}</td>
+</tr>
+
+
+</tbody>
+<tfoot>
+<tr>
+<th>Entity</th>
+<th>Result</th>
+</tr>
+</tfoot>
+</table>
+
+</div>
+                        <div class="text-center">
+<input type="button" class="btn btn-success" value="Report" onclick="printDiv()">
+                        </div>
+
+
+
+<hr style="background-color: black;">
+<div class="card" style="margin-top :25px;margin-bottom: 25px;">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-8"><h4>To view the Technical stuff(generation of results) click on the Technical Stuff button.</h4></div>
+            <div class="col-sm-4"><a href="/techstuff/{{information.id}}" type="button" class="btn btn-success">Technical Stuff</a></div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js'></script>
+
+
+
+     </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <!-- <div class="text-muted">Copyright &copy; All rights reserved</div> -->
+                          <!--   <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div> -->
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+       
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="http://127.0.0.1:5000/static/js/scripts.js"></script>
+
+    </body>
+</html>
