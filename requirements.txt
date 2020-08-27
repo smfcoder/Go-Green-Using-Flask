@@ -1,6 +1,3 @@
-distlib==0.3.1
-distro==1.5.0
-distro-info===0.18ubuntu0.18.04.1
 Django==3.1
 filelock==3.0.12
 Flask==1.1.2
@@ -81,8 +78,6 @@ tensorflow==1.14.0
 tensorflow-estimator==1.14.0
 termcolor==1.1.0
 tqdm==4.48.1
-twilio==6.44.1
-ubuntu-drivers-common==0.0.0
 ufw==0.35
 unattended-upgrades==0.1
 urllib3==1.25.10
@@ -93,6 +88,4 @@ wadllib==1.3.2
 Werkzeug==1.0.1
 wrapt==1.12.1
 xkit==0.0.0
-xlrd==1.2.0
-xlwt==1.3.0
 zipp==3.1.0
