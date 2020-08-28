@@ -77,5 +77,3 @@ virtualenv-clone==0.5.4
 wadllib==1.3.2
 Werkzeug==1.0.1
 wrapt==1.12.1
-xkit==0.0.0
-zipp==3.1.0
