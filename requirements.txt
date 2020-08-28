@@ -12,9 +12,6 @@ idna==2.10
 image==1.5.32
 importlib-metadata==1.7.0
 importlib-resources==3.0.0
-ipynb-py-convert==0.4.6
-itsdangerous==1.1.0
-Jinja2==2.11.2
 joblib==0.16.0
 Keras==2.4.3
 Keras-Applications==1.0.8
