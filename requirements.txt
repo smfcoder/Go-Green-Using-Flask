@@ -53,7 +53,7 @@ pytz==2020.1
 pyxdg==0.25
 PyYAML==3.12
 regex==2020.7.14
-reportlab==3.4.0
+reportlab==3.5.55
 requests==2.24.0
 requests-unixsocket==0.1.5
 scikit-build==0.11.1
